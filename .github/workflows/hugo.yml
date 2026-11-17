@@ -60,7 +60,9 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: "0.164.0"
+          # The bundled Learn theme uses legacy APIs such as getJSON.
+          # Keep the Hugo version that previously built this site successfully.
+          hugo-version: "0.134.3"
           extended: true
 
       - name: Setup GitHub Pages
