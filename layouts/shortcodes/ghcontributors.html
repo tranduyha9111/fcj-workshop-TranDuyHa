@@ -24,12 +24,14 @@
 {{ $url := .Get 0 }}
 {{ $contributors := slice }}
 
-{{ with try (resources.GetRemote $url) }}
+{{ with resources.GetRemote $url }}
   {{ with .Err }}
     {{ warnf "Unable to fetch GitHub contributors: %s" . }}
-  {{ else with .Value }}
+  {{ else }}
     {{ $contributors = . | transform.Unmarshal }}
   {{ end }}
+{{ else }}
+  {{ warnf "Unable to fetch GitHub contributors from URL: %s" $url }}
 {{ end }}
 
 <div class="ghContributors">
@@ -41,6 +43,7 @@
         width="32"
         height="32"
         style="height: 32px; margin-bottom: 0.25em; vertical-align: middle;"
+        alt="{{ .login }}"
       />
       <label>
         <a href="{{ .html_url }}">@{{ .login }}</a>
